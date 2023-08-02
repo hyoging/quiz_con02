@@ -1,0 +1,53 @@
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script>
+    var flag = false;
+    $("html").on("mouseleave", () => {flag = true;})
+    $("html").on("mouse", () => {flag = false;})
+    
+    //페이지가 변경될 때 실행되는 이벤트
+    // <a> submit, button, 뒤로가기 등등
+    window.onbeforeunload = () => { 
+        if(flag){
+            fetch("/member/logout");
+        }
+    }
+
+    window.onload = () => {
+        console.log("cookie 확인");
+        console.log(document.cookie);
+        console.log(document.cookie.indexOf("isLogin=true"));
+        console.log(document.cookie.indexOf("isLogin111=true"));
+        
+        let msg = "<a href='/'> HOME </a>";
+
+        if((document.cookie.indexOf("isLogin=true") !== -1)) {
+            msg += "<a href='/member/logout'> 로그아웃 </a>";
+            msg += "<a href='/member/list'> 회원정보 </a>";
+        }else{
+            msg += "<a href='/member/login'> 로그인 </a>";
+            msg += "<a href='/member/login'> 회원정보 </a>";
+        }
+        document.querySelector("#nav").innerHTML = msg;
+    }
+
+</script>
+
+<div id ="nav"></div>
+<hr>
+
+<a href="/">HOME</a>
+
+<% if (username){%> 
+    <a href="/member/logout">로그아웃</a>
+    <a href="/member/list">회원정보</a>
+<%} else { %>
+    <a href="/member/login">로그인</a>
+    <a href="/member/list">회원정보</a>
+<% } %>
+
+
+
+<!-- <a href="/">HOME</a>
+<a href="/member/login">로그인</a> -->
+<hr>
